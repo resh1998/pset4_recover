@@ -41,7 +41,27 @@ int main(void)
             buffer[2] == 0xff && 
             (buffer[3] & 0xf0) == 0xe0)
         {
+            // if we have already reach end then close previously opened jpeg
+            if (out_file != NULL)
+            {
+                fclose(out_file);
+            }
             
+            // labeling the file
+            sprintf(filename, "%03i.jpg", num);
+            
+            // opening an outfile
+            out_file = fopen(filename, "w");
+            
+            num++;
+            
+            // copying the contents from array to the outfile
+            fwrite(&buffer, sizeof(buffer), 1, out_file);    
+        }
+        
+        else if(num > 0)
+        {
+            fwrite(&buffer, sizeof(buffer), 1, out_file);
         }
         
     }
